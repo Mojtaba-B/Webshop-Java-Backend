@@ -1,38 +1,38 @@
 package de.mo.coding.WebShop.repository;
 
+import de.mo.coding.WebShop.model.ProductCreateRequest;
 import de.mo.coding.WebShop.model.ProductResponse;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ProductRepository {
 
-    private final List<ProductResponse> products =
-            Arrays.asList(
-                    new ProductResponse(
-                            "1",
-                            "AMD Ryzen 9 5950x",
-                            "this is a product",
-                            89400,
-                            Arrays.asList("AMD", "Processor")
-                    ),
-                    new ProductResponse(
-                            "2",
-                            "Intel Core i9-9900KF",
-                            "this is a product",
-                            75400,
-                            Arrays.asList("Intel", "Processor")
-                    ),
-                    new ProductResponse(
-                            "3",
-                            "NDIVIA GeForce GTX 1000 Ti Black Edition 11GB",
-                            "this is a product",
-                            49800,
-                            Arrays.asList("NDIVIA", "graphics")
-                    )
-            );
-    ;
+    private List<ProductResponse> products = new ArrayList<>();
+
+    public ProductRepository() {
+        products.add(new ProductResponse(
+                UUID.randomUUID().toString(),
+                "AMD Ryzen 9 5950x",
+                "this is a product",
+                89400,
+                Arrays.asList("AMD", "Processor")
+        ));
+        products.add(new ProductResponse(
+                UUID.randomUUID().toString(),
+                "Intel Core i9-9900KF",
+                "this is a product",
+                75400,
+                Arrays.asList("Intel", "Processor")
+        ));
+        products.add(new ProductResponse(
+                UUID.randomUUID().toString(),
+                "NDIVIA GeForce GTX 1000 Ti Black Edition 11GB",
+                "this is a product",
+                49800,
+                Arrays.asList("NDIVIA", "graphics")
+        ));
+    }
 
     public List<ProductResponse> findAll(String tag) {
 
@@ -51,5 +51,33 @@ public class ProductRepository {
                 .stream()
                 .map(t -> t.toLowerCase())
                 .collect(Collectors.toList());
+    }
+
+
+    public Optional<ProductResponse> findById(String id) {
+        return products.stream()
+                .filter(p -> p.getId().equals(id))
+                .findFirst();
+
+    }
+
+    public boolean delete(String id) {
+        int beforeLength = products.size();
+        products = products.stream()
+                .filter(p -> !p.getId().equals(id))
+                .collect(Collectors.toList());
+        return beforeLength > products.size();
+    }
+
+    public ProductResponse save(ProductCreateRequest request) {
+        ProductResponse response = new ProductResponse(
+                UUID.randomUUID().toString(),
+                request.getName(),
+                request.getDescription(),
+                request.getPriceInCent(),
+                request.getTags());
+
+        products.add(response);
+        return response;
     }
 }
