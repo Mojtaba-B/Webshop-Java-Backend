@@ -25,6 +25,26 @@
       "response": []
     },
     {
+      "name": "GET Customer By Id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/api/customers/1",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "customers",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "GET product By Id",
       "request": {
         "method": "GET",
