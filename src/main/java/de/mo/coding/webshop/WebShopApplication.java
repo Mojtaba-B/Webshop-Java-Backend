@@ -1,4 +1,4 @@
-package de.mo.coding.WebShop;
+package de.mo.coding.webshop;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

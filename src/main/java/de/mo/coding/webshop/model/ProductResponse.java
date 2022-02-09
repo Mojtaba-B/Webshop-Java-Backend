@@ -1,25 +1,31 @@
-package de.mo.coding.WebShop.model;
+package de.mo.coding.webshop.model;
 
 import java.util.List;
 
-public class ProductCreateRequest {
+public class ProductResponse {
 
+    private final String id;
     private final String name;
     private final String description;
     private final Integer priceInCent;
     private final List<String> tags;
 
-    public ProductCreateRequest(
+    public ProductResponse(
+            String id,
             String name,
             String description,
             Integer priceInCent,
             List<String> tags) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.priceInCent = priceInCent;
         this.tags = tags;
     }
 
+    public String getId() {
+        return id;
+    }
 
     public String getName() {
         return name;

@@ -1,7 +1,7 @@
-package de.mo.coding.WebShop.repository;
+package de.mo.coding.webshop.repository;
 
-import de.mo.coding.WebShop.model.ProductCreateRequest;
-import de.mo.coding.WebShop.model.ProductResponse;
+import de.mo.coding.webshop.model.ProductCreateRequest;
+import de.mo.coding.webshop.model.ProductResponse;
 
 import java.util.*;
 import java.util.stream.Collectors;

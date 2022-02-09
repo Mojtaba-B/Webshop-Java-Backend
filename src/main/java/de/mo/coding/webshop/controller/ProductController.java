@@ -1,8 +1,8 @@
-package de.mo.coding.WebShop.controller;
+package de.mo.coding.webshop.controller;
 
-import de.mo.coding.WebShop.model.ProductCreateRequest;
-import de.mo.coding.WebShop.model.ProductResponse;
-import de.mo.coding.WebShop.repository.ProductRepository;
+import de.mo.coding.webshop.model.ProductCreateRequest;
+import de.mo.coding.webshop.model.ProductResponse;
+import de.mo.coding.webshop.repository.ProductRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
