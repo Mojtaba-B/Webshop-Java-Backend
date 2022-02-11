@@ -12,7 +12,7 @@ public class ProductRepository {
 
     private List<ProductResponse> products = new ArrayList<>();
 
-    private ProductRepository() {
+    public ProductRepository() {
         products.add(new ProductResponse(
                 UUID.randomUUID().toString(),
                 "AMD Ryzen 9 5950x",

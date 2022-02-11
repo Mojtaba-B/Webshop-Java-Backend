@@ -34,14 +34,17 @@ class ShoppingCartService(
         )
     }
 
-    private fun calculateSumForCart(orderPositions: List<OrderPositionResponse>, deliveryCost: Long): Long {
-        val positionAmounts: List<Long> = orderPositions.map {
-            val product = productRepository.findById(it.productId)
-                    .orElseThrow { throw IdNotFoundException("product with id ${it.productId} not found") }
-            it.quantity * product.priceInCent
-        }
+     fun calculateSumForCart(orderPositions: List<OrderPositionResponse>, deliveryCost: Long): Long {
+         val positionAmounts: List<Long> = orderPositions.map {
+             val product = productRepository.findById(it.productId)
+                     .orElseThrow { throw IdNotFoundException("product with id ${it.productId} not found") }
+             if (it.quantity <= 0) {
+                 throw IllegalArgumentException("OrderPosition with quantity of ${it.quantity} is not allowed")
+             }
+             it.quantity * product.priceInCent
+         }
 
-        val positionsSum = positionAmounts.sumOf { it }
+         val positionsSum = positionAmounts.sumOf { it }
         return positionsSum + deliveryCost
     }
 }
