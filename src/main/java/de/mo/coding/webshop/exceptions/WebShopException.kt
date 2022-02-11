@@ -6,4 +6,11 @@ data class WebShopException(
         override val message: String,
         val statusCode: HttpStatus
 
-) : Exception(message)
+) : RuntimeException(message)
+
+
+data class IdNotFoundException(
+        override val message: String,
+        val statusCode: HttpStatus = HttpStatus.BAD_REQUEST
+
+) : RuntimeException(message)

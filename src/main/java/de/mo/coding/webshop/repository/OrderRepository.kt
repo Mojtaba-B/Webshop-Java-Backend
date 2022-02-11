@@ -1,5 +1,6 @@
 package de.mo.coding.webshop.repository
 
+import de.mo.coding.webshop.exceptions.IdNotFoundException
 import de.mo.coding.webshop.model.OrderCreateRequest
 import de.mo.coding.webshop.model.OrderResponse
 import de.mo.coding.webshop.model.OrderStatus
@@ -8,7 +9,9 @@ import java.time.LocalDateTime
 import java.util.*
 
 @Service
-class OrderRepository {
+class OrderRepository(
+        private val customerRepository: CustomerRepository
+) {
 
     private val orders = mutableListOf<OrderResponse>()
 
@@ -27,6 +30,11 @@ class OrderRepository {
 
     fun findById(orderId: String): OrderResponse? {
         return orders.find { it.id == orderId }
+    }
+
+    fun findAllByCustomerIdWhereOrderStatusIsNew(customerId: String): List<OrderResponse> {
+        customerRepository.findById(customerId) ?: throw IdNotFoundException("customer with id $customerId not found")
+        return orders.filter { it.customerId == customerId && it.status == OrderStatus.NEW }
     }
 
 }

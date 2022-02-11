@@ -41,6 +41,7 @@ class OrderService(
 
         val orderPositionResponse = OrderPositionResponse(
                 id = UUID.randomUUID().toString(),
+                orderId = orderId,
                 productId = request.productId,
                 quantity = request.quantity
         )

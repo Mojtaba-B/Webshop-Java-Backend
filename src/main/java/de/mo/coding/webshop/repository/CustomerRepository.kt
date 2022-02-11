@@ -1,5 +1,6 @@
 package de.mo.coding.webshop.repository
 
+import de.mo.coding.webshop.exceptions.IdNotFoundException
 import de.mo.coding.webshop.model.CustomerResponse
 import org.springframework.stereotype.Service
 
@@ -17,6 +18,6 @@ class CustomerRepository {
 
 
     fun findById(id: String): CustomerResponse? {
-        return customers.find { it.id == id }
+        return customers.find { it.id == id } ?: throw IdNotFoundException("customer with id $id not found")
     }
 }
