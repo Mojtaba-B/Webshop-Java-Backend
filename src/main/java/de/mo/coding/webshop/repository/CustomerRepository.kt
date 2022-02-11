@@ -1,7 +1,9 @@
 package de.mo.coding.webshop.repository
 
 import de.mo.coding.webshop.model.CustomerResponse
+import org.springframework.stereotype.Service
 
+@Service
 class CustomerRepository {
 
     private val customers = listOf(

@@ -10,14 +10,16 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class OrderController {
-    private val orderService: OrderService = OrderService()
+class OrderController(
+        private val orderService: OrderService
+) {
 
     @PostMapping("/orders")
     fun createOrder(
             @RequestBody request: OrderCreateRequest
     ): OrderResponse {
         return orderService.createOrder(request)
+
     }
 
     @PostMapping("/orders/{id}/positions")

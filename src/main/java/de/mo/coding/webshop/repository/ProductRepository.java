@@ -2,15 +2,17 @@ package de.mo.coding.webshop.repository;
 
 import de.mo.coding.webshop.model.ProductCreateRequest;
 import de.mo.coding.webshop.model.ProductResponse;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Service
 public class ProductRepository {
 
     private List<ProductResponse> products = new ArrayList<>();
 
-    public ProductRepository() {
+    private ProductRepository() {
         products.add(new ProductResponse(
                 UUID.randomUUID().toString(),
                 "AMD Ryzen 9 5950x",
