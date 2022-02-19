@@ -1,0 +1,20 @@
+create table product_entity_tags
+(
+    product_entity_id varchar(36) not null,
+    tags              varchar(255)
+);
+
+
+create table products
+(
+    id            varchar(36) not null,
+    description   varchar(255) not null,
+    name          varchar(255) not null,
+    price_in_cent integer not null,
+    primary key (id)
+);
+
+alter table product_entity_tags
+    add constraint product_entity_tags_id_fk
+        foreign key (product_entity_id)
+            references products;
