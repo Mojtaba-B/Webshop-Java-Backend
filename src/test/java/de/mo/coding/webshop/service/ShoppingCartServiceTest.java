@@ -1,10 +1,9 @@
 package de.mo.coding.webshop.service;
 
+import de.mo.coding.webshop.entity.ProductEntity;
 import de.mo.coding.webshop.exceptions.IdNotFoundException;
 import de.mo.coding.webshop.model.OrderPositionResponse;
-import de.mo.coding.webshop.model.ProductCreateRequest;
 import de.mo.coding.webshop.model.ProductResponse;
-import de.mo.coding.webshop.repository.CustomerRepository;
 import de.mo.coding.webshop.repository.OrderPositionRepository;
 import de.mo.coding.webshop.repository.OrderRepository;
 import de.mo.coding.webshop.repository.ProductRepository;
@@ -13,9 +12,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 public class ShoppingCartServiceTest {
     private ProductRepository productRepository;
@@ -23,10 +26,10 @@ public class ShoppingCartServiceTest {
 
     @BeforeEach
     public void setUpTests() {
-        productRepository = new ProductRepository();
+        productRepository = mock(ProductRepository.class);
         service = new ShoppingCartService(
-                new OrderRepository(new CustomerRepository()),
-                new OrderPositionRepository(),
+                mock(OrderRepository.class),
+                mock(OrderPositionRepository.class),
                 productRepository
         );
 
@@ -35,11 +38,9 @@ public class ShoppingCartServiceTest {
     @Test
     public void testThat_calculateSumForEmptyCart_returnsDeliveryCost() {
 
-        //given
-
         //when
         Long result = service.calculateSumForCart(
-                new ArrayList<OrderPositionResponse>(), 500);
+                new ArrayList<>(), 500);
 
         //then
         assertThat(result).isEqualTo(500);
@@ -49,7 +50,15 @@ public class ShoppingCartServiceTest {
     public void testThat_calculateSumForOneProduct_sumsPriceOfProduct() {
 
         //given
-        ProductResponse savedProduct = savedProduct(1000);
+        ProductEntity savedProduct = new ProductEntity(
+                UUID.randomUUID().toString(),
+                "",
+                "",
+                1000,
+                new ArrayList<>()
+        );
+        given(productRepository.findById(savedProduct.getId())).willReturn(Optional.of(savedProduct));
+
         List<OrderPositionResponse> orderPositions = new ArrayList<>();
         addOrderPosition(orderPositions, savedProduct, 1);
 
@@ -64,8 +73,24 @@ public class ShoppingCartServiceTest {
     public void testThat_calculateSumForTwoProducts_sumsPricesOfProducts() {
 
         //given
-        ProductResponse savedProduct1 = savedProduct(1000);
-        ProductResponse savedProduct2 = savedProduct(2000);
+        ProductEntity savedProduct1 = new ProductEntity(
+                UUID.randomUUID().toString(),
+                "",
+                "",
+                1000,
+                new ArrayList<>()
+        );
+        given(productRepository.findById(savedProduct1.getId())).willReturn(Optional.of(savedProduct1));
+
+        ProductEntity savedProduct2 = new ProductEntity(
+                UUID.randomUUID().toString(),
+                "",
+                "",
+                2000,
+                new ArrayList<>()
+        );
+        given(productRepository.findById(savedProduct2.getId())).willReturn(Optional.of(savedProduct2));
+
 
         List<OrderPositionResponse> orderPositions = new ArrayList<>();
         addOrderPosition(orderPositions, savedProduct1, 1);
@@ -83,7 +108,12 @@ public class ShoppingCartServiceTest {
     public void testThat_calculateSumForNotExistingProduct_throwsException() {
 
         //given
-        ProductResponse notSavedProduct = new ProductResponse("", "", "", 1000, new ArrayList<>());
+        ProductEntity notSavedProduct = new ProductEntity(
+                "",
+                "",
+                "",
+                1000,
+                new ArrayList<>());
         List<OrderPositionResponse> orderPositions = new ArrayList<>();
         addOrderPosition(orderPositions, notSavedProduct, 1);
 
@@ -100,8 +130,24 @@ public class ShoppingCartServiceTest {
     public void testThat_calculateSumForNegativeQuantity_throwsException() {
 
         //given
-        ProductResponse savedProduct1 = savedProduct(1000);
-        ProductResponse savedProduct2 = savedProduct(2000);
+        ProductEntity savedProduct1 = new ProductEntity(
+                UUID.randomUUID().toString(),
+                "",
+                "",
+                1000,
+                new ArrayList<>()
+        );
+        given(productRepository.findById(savedProduct1.getId())).willReturn(Optional.of(savedProduct1));
+
+        ProductEntity savedProduct2 = new ProductEntity(
+                UUID.randomUUID().toString(),
+                "",
+                "",
+                2000,
+                new ArrayList<>()
+        );
+        given(productRepository.findById(savedProduct2.getId())).willReturn(Optional.of(savedProduct2));
+
 
         List<OrderPositionResponse> orderPositions = new ArrayList<>();
         addOrderPosition(orderPositions, savedProduct1, 1);
@@ -114,14 +160,8 @@ public class ShoppingCartServiceTest {
         });
     }
 
-    private void addOrderPosition(List<OrderPositionResponse> orderPositions, ProductResponse savedProduct, int quantity) {
+    private void addOrderPosition(List<OrderPositionResponse> orderPositions, ProductEntity savedProduct, int quantity) {
         orderPositions.add(new OrderPositionResponse("1", "order-Id", savedProduct.getId(), quantity));
-    }
-
-    private ProductResponse savedProduct(int price) {
-        return productRepository.save(new ProductCreateRequest(
-                "", "", price, new ArrayList<>()
-        ));
     }
 
 }

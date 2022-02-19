@@ -18,7 +18,12 @@ class CustomerController(
 
     @GetMapping("/customers/{id}")
     fun getCustomerById(@PathVariable id: String): CustomerResponse? {
-        return customerRepository.findById(id)
+        val customer = customerRepository.getOne(id)
+        return CustomerResponse(
+                customer.id,
+                customer.firstName,
+                customer.lastName,
+                customer.email)
     }
 
 

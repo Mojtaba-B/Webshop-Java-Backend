@@ -1,8 +1,8 @@
 package de.mo.coding.webshop.service
 
+import de.mo.coding.webshop.entity.OrderEntity
 import de.mo.coding.webshop.exceptions.IdNotFoundException
 import de.mo.coding.webshop.model.OrderPositionResponse
-import de.mo.coding.webshop.model.OrderResponse
 import de.mo.coding.webshop.model.ShoppingCartResponse
 import de.mo.coding.webshop.repository.OrderPositionRepository
 import de.mo.coding.webshop.repository.OrderRepository
@@ -18,9 +18,9 @@ class ShoppingCartService(
 ) {
     fun getShoppingCartForCustomer(customerId: String): ShoppingCartResponse {
 
-        val orders: List<OrderResponse> = orderRepository.findAllByCustomerIdWhereOrderStatusIsNew(customerId)
+        val orders: List<OrderEntity> = orderRepository.findAllByCustomerIdWhereOrderStatusIsNew(customerId)
         val orderIds = orders.map { it.id }
-        val orderPositions: List<OrderPositionResponse> = orderPositionRepository.findAllByOrderIds(orderIds)
+        val orderPositions = orderPositionRepository.findAllById(orderIds).map { OrderService.mapToResponse(it) }
 
         val deliveryCost = 800L; //TODO: feature to select delivery method?
         val totalAmount = calculateSumForCart(orderPositions, deliveryCost)
@@ -34,17 +34,17 @@ class ShoppingCartService(
         )
     }
 
-     fun calculateSumForCart(orderPositions: List<OrderPositionResponse>, deliveryCost: Long): Long {
-         val positionAmounts: List<Long> = orderPositions.map {
-             val product = productRepository.findById(it.productId)
-                     .orElseThrow { throw IdNotFoundException("product with id ${it.productId} not found") }
-             if (it.quantity <= 0) {
-                 throw IllegalArgumentException("OrderPosition with quantity of ${it.quantity} is not allowed")
-             }
-             it.quantity * product.priceInCent
-         }
+    fun calculateSumForCart(orderPositions: List<OrderPositionResponse>, deliveryCost: Long): Long {
+        val positionAmounts: List<Long> = orderPositions.map {
+            val product = productRepository.findById(it.productId)
+                    .orElseThrow { throw IdNotFoundException("product with id ${it.productId} not found") }
+            if (it.quantity <= 0) {
+                throw IllegalArgumentException("OrderPosition with quantity of ${it.quantity} is not allowed")
+            }
+            it.quantity * product.priceInCent
+        }
 
-         val positionsSum = positionAmounts.sumOf { it }
+        val positionsSum = positionAmounts.sumOf { it }
         return positionsSum + deliveryCost
     }
 }

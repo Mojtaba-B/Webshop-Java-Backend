@@ -1,12 +1,10 @@
 package de.mo.coding.webshop.repository;
 
-import de.mo.coding.webshop.model.ProductCreateRequest;
-import de.mo.coding.webshop.model.ProductResponse;
-import org.springframework.stereotype.Service;
+import de.mo.coding.webshop.entity.ProductEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.*;
-import java.util.stream.Collectors;
 
+/*
 @Service
 public class ProductRepository {
 
@@ -71,15 +69,13 @@ public class ProductRepository {
         return beforeLength > products.size();
     }
 
-    public ProductResponse save(ProductCreateRequest request) {
-        ProductResponse response = new ProductResponse(
-                UUID.randomUUID().toString(),
-                request.getName(),
-                request.getDescription(),
-                request.getPriceInCent(),
-                request.getTags());
-
+    public ProductResponse save(ProductResponse response) {
         products.add(response);
         return response;
     }
 }
+*/
+
+public interface ProductRepository extends JpaRepository<ProductEntity,String> { }
+
+

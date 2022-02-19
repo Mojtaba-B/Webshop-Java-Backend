@@ -1,23 +1,18 @@
 package de.mo.coding.webshop.repository
 
-import de.mo.coding.webshop.exceptions.IdNotFoundException
-import de.mo.coding.webshop.model.CustomerResponse
-import org.springframework.stereotype.Service
 
-@Service
-class CustomerRepository {
+import org.springframework.data.jpa.repository.JpaRepository
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.Table
 
-    private val customers = listOf(
-            CustomerResponse(
-                    id = "1",
-                    firstName = "Mojtaba",
-                    lastName = "Bakhtiari",
-                    email = "test@gmail.com"
-            )
-    )
+interface CustomerRepository:JpaRepository<CustomerEntity, String>{}
 
-
-    fun findById(id: String): CustomerResponse? {
-        return customers.find { it.id == id } ?: throw IdNotFoundException("customer with id $id not found")
-    }
-}
+@Entity
+@Table(name="customers")
+class CustomerEntity(
+        @Id val id: String,
+        val firstName: String,
+        val lastName: String,
+        val email: String
+)

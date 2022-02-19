@@ -1,16 +1,18 @@
 package de.mo.coding.webshop.repository
 
-import de.mo.coding.webshop.model.OrderPositionResponse
-import org.springframework.stereotype.Service
+import org.springframework.data.jpa.repository.JpaRepository
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.Table
 
-@Service
-class OrderPositionRepository {
-    private val orderPositions = mutableListOf<OrderPositionResponse>()
-    fun save(orderPositionResponse: OrderPositionResponse) {
-        orderPositions.add(orderPositionResponse)
-    }
 
-    fun findAllByOrderIds(orderIds: List<String>): List<OrderPositionResponse> {
-        return orderPositions.filter { orderIds.contains(it.orderId) }
-    }
-}
+interface OrderPositionRepository : JpaRepository<OrderPositionEntity, String>
+
+@Entity
+@Table(name = "order_positions")
+class OrderPositionEntity(
+        @Id val id: String,
+        val orderId: String,
+        val productId: String,
+        val quantity: Long
+)
