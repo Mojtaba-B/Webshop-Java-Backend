@@ -1,7 +1,5 @@
 package de.mo.coding.webshop.entity;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;

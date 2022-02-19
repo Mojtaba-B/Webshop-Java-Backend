@@ -4,7 +4,6 @@ import de.mo.coding.webshop.entity.OrderEntity
 import de.mo.coding.webshop.exceptions.IdNotFoundException
 import de.mo.coding.webshop.model.OrderPositionResponse
 import de.mo.coding.webshop.model.ShoppingCartResponse
-import de.mo.coding.webshop.repository.OrderPositionRepository
 import de.mo.coding.webshop.repository.OrderRepository
 import de.mo.coding.webshop.repository.ProductRepository
 import org.springframework.stereotype.Service
@@ -12,15 +11,16 @@ import org.springframework.stereotype.Service
 @Service
 class ShoppingCartService(
         private val orderRepository: OrderRepository,
-        private val orderPositionRepository: OrderPositionRepository,
         private val productRepository: ProductRepository
 
 ) {
     fun getShoppingCartForCustomer(customerId: String): ShoppingCartResponse {
 
         val orders: List<OrderEntity> = orderRepository.findAllByCustomerIdWhereOrderStatusIsNew(customerId)
-        val orderIds = orders.map { it.id }
-        val orderPositions = orderPositionRepository.findAllById(orderIds).map { OrderService.mapToResponse(it) }
+
+        val orderPositions = orders
+                .map { it.orderPositions }.flatten()
+                .map { OrderService.mapToResponse(it) }
 
         val deliveryCost = 800L; //TODO: feature to select delivery method?
         val totalAmount = calculateSumForCart(orderPositions, deliveryCost)

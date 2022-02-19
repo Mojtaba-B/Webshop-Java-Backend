@@ -1,18 +1,10 @@
 package de.mo.coding.webshop.repository
 
-import org.springframework.data.jpa.repository.JpaRepository
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
+import javax.persistence.Embeddable
 
-
-interface OrderPositionRepository : JpaRepository<OrderPositionEntity, String>
-
-@Entity
-@Table(name = "order_positions")
+@Embeddable
 class OrderPositionEntity(
-        @Id val id: String,
-        val orderId: String,
+        val id: String,
         val productId: String,
         val quantity: Long
 )
