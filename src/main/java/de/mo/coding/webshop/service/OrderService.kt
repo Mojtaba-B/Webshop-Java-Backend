@@ -1,6 +1,7 @@
 package de.mo.coding.webshop.service
 
 import de.mo.coding.webshop.entity.OrderEntity
+import de.mo.coding.webshop.entity.OrderPositionEntity
 import de.mo.coding.webshop.exceptions.WebShopException
 import de.mo.coding.webshop.model.*
 import de.mo.coding.webshop.repository.*

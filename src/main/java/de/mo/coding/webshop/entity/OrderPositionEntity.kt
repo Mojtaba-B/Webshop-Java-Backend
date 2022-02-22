@@ -1,4 +1,4 @@
-package de.mo.coding.webshop.repository
+package de.mo.coding.webshop.entity
 
 import javax.persistence.Embeddable
 

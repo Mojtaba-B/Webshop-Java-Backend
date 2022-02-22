@@ -7,14 +7,14 @@ create table product_entity_tags
 
 create table products
 (
-    id            varchar(36) not null,
+    id            varchar(36)  not null,
     description   varchar(255) not null,
     name          varchar(255) not null,
-    price_in_cent integer not null,
+    price_in_cent integer      not null,
     primary key (id)
 );
 
 alter table product_entity_tags
-    add constraint product_entity_tags_id_fk
+    add constraint FKmht84mxiy3fo058vjgvlyhnrk
         foreign key (product_entity_id)
-            references products;
+            references products (id);

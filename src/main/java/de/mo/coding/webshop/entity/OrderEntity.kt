@@ -1,7 +1,6 @@
 package de.mo.coding.webshop.entity
 
 import de.mo.coding.webshop.model.OrderStatus
-import de.mo.coding.webshop.repository.OrderPositionEntity
 import java.time.LocalDateTime
 import javax.persistence.*
 
